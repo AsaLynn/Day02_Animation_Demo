@@ -1,0 +1,131 @@
+动画资源
+
+   一, 分类
+
+	1, 概要
+
+		Android3.0之前 只有两种动画 ,  帧动画 和 补间动画
+
+		Android3.0后, 又引入一个新的的动画 , 属性动画
+
+
+	2, 分类
+
+		帧动画			   Frame Animation		(Drawable Animation)
+
+		补间动画	       Tween Animation		(View Animation)
+
+					Alpha			透明度补间动画   --   渐变动画
+					Scale			缩放补间动画
+					rotate			旋转补间动画
+					Translate		移动补间动画
+					Set
+
+		属性动画	      Property  Animation
+
+
+   二, Frame Animation  帧动画
+
+	每一张静止的图片显示出来, 利用人眼睛的错觉, 形成的动画
+
+	将一组图片, 一帧一帧的播放出来
+
+	创建方式:
+
+	   方式一:  资源文件的方式
+
+		1, 在res/drawable 中创建一个xml的文件
+
+			标签: <animation-list/>
+
+
+		2, 在代码或者布局页面中, 把图片的背景设置为动画资源
+
+		3, 获取AnimationDrawable动画管理器, 调用start()启动动画, 调用stop()停止动画
+
+
+	       [备注]
+
+		   不要在onCreate()方法中执行动画的start()方法, 因为在该方法中动画还没有和window相关联
+
+		   如果想要界面一启动就播放动画, 则需要在onWindowFocusChanged中调用start();
+
+
+
+			例如:
+
+			    //得到或者失去焦点时, 执行该方法
+			    //程序一旦运行, 则开始播放动画
+			    @Override
+			    public void onWindowFocusChanged(boolean hasFocus) {
+				// TODO Auto-generated method stub
+				super.onWindowFocusChanged(hasFocus);
+
+				if(!drawable.isRunning())
+				{
+					drawable.start();
+				}
+			    }
+
+
+	方式二:  java代码的方式
+
+		1, 在代码中, 获取动画管理器对象  AnimationDrawable
+
+			AnimationDrawable drawable = new AnimationDrawable();
+
+		2, 向动画管理器中添加动画
+
+			drawable.addFrame(getResources().getDrawble(R.drawable.****),该图片持续的时间);
+
+		3, 为控件设置动画资源
+
+			iv.setImageDrawable(drawable);
+
+
+		4, 调用AnimationDrawable的start()方法开启动画, stop() 方法停止动画
+
+
+		5, 默认只会执行一次, 设置动画执行的次数
+
+			drawable.setOneShot(true/false);//true 执行一次, false 执行多次
+
+
+三, 补间动画
+
+	开发者只需要开始和结束动画, 中间位置由系统自动补齐
+
+
+	主要分类:  透明度 / 缩放 / 旋转 / 移动/ 集合
+
+
+	创建方式:
+
+		1, 资源文件的创建
+
+			存放目录:  res/anim
+
+				<alpha>		透明度
+				<scale>		缩放
+				<translate>	平移
+				<rotate>	旋转
+				<set>		集合
+
+			步骤:
+
+				1, res/anim  创建xml格式的资源文件
+
+
+				2, 在java代码中, 启动动画资源
+
+				   iv.startAnimation(AnimationUtils.loadAnimation(this, R.anim.anim_alpha));
+
+
+		2, java代码的创建
+
+
+			1, 得到Animation对象
+
+ 2, 设置持续时间
+
+			3, 启动动画
